@@ -53,7 +53,9 @@ class MainListAdapter(private val listener: MainListItemListener) :
     /*
         LISTENER class
      */
-    class MainListItemListener(val onClick: (Asteroid) -> Unit)
+    class MainListItemListener(val clickListener: (Asteroid) -> Unit) {
+        fun onClick(asteroid: Asteroid) = clickListener(asteroid)
+    }
 
 
     /*

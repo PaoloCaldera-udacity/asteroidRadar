@@ -15,7 +15,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:onClick="@{() -> itemListener.onClick}"
+        android:onClick="@{() -> itemListener.onClick(asteroid)}"
         android:padding="8dp">
 
         <TextView
