@@ -9,11 +9,11 @@ import androidx.room.Query
 @Dao
 interface NasaDatabaseDao {
 
-    // Insert to the database all the asteroid data
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertAll(vararg asteroid: DatabaseAsteroid)
-
     // Recover from the database all the asteroid data
     @Query("SELECT * FROM asteroid WHERE DATE(close_approach_date) >= DATE() ORDER BY close_approach_date DESC")
     fun selectByDate() : LiveData<List<DatabaseAsteroid>>
+
+    // Insert to the database all the asteroid data
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertAll(vararg asteroid: DatabaseAsteroid)
 }
