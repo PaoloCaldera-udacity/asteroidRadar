@@ -10,7 +10,7 @@ import androidx.room.Query
 interface NasaDatabaseDao {
 
     // Recover from the database all the asteroid data
-    @Query("SELECT * FROM asteroid WHERE DATE(close_approach_date) >= DATE() ORDER BY close_approach_date DESC")
+    @Query("SELECT * FROM asteroid")
     fun selectByDate() : LiveData<List<DatabaseAsteroid>>
 
     // Insert to the database all the asteroid data

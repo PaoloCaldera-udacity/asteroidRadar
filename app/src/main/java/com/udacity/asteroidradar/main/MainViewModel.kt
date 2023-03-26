@@ -1,31 +1,37 @@
 package com.udacity.asteroidradar.main
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.udacity.asteroidradar.Constants
-import com.udacity.asteroidradar.api.ApodApi
-import com.udacity.asteroidradar.api.NeoWsApi
-import com.udacity.asteroidradar.database.NasaDatabase
+import com.udacity.asteroidradar.AsteroidRadarApplication
 import com.udacity.asteroidradar.repository.AsteroidRepository
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
-class MainViewModel : ViewModel() {
+class MainViewModel(application: AsteroidRadarApplication) : ViewModel() {
+
+    // Initialize the repository from which to retrieve cached data
+    private val repository = AsteroidRepository(application.database)
 
     init {
+        Timber.i(repository.asteroids.value?.size.toString())
         viewModelScope.launch {
-            /*
-            try {
-                val image = ApodApi.apodService.getImageOfTheDay(Constants.API_KEY)
-                Log.i("MainViewModel", image.toString())
-
-                val jsonResult = NeoWsApi.neoWsService.getAsteroidsAsync(Constants.API_KEY)
-                Log.i("MainViewModel", jsonResult)
-            } catch (e: Exception) {
-                Log.i("MainViewModel", "${e.message}")
-            } */
-
-
+            repository.refreshAsteroids()
         }
+    }
+
+    // UI variables
+    val asteroids = repository.asteroids
+
+    // ViewModelFactory class
+    class MainViewModelFactory(private val application: AsteroidRadarApplication) : ViewModelProvider.Factory {
+        override fun <T : ViewModel> create(modelClass: Class<T>): T {
+            if (modelClass.isAssignableFrom(MainViewModel::class.java)) {
+                @Suppress("UNCHECKED_CAST")
+                return MainViewModel(application) as T
+            }
+            throw IllegalArgumentException("ViewModel class not found: unable to create ViewModel")
+        }
+
     }
 }
