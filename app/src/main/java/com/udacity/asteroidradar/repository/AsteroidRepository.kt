@@ -46,22 +46,18 @@ class AsteroidRepository(private val database: NasaDatabase) {
     }
 
     private fun asDomainModel(databaseAsteroids: List<DatabaseAsteroid>): List<Asteroid> {
-        val asteroids = mutableListOf<Asteroid>()
-        for (item in databaseAsteroids) {
-            asteroids.add(
-                Asteroid(
-                    id = item.id,
-                    codename = item.codename,
-                    closeApproachDate = item.closeApproachDate,
-                    absoluteMagnitude = item.absoluteMagnitude,
-                    estimatedDiameter = item.estimatedDiameter,
-                    relativeVelocity = item.relativeVelocity,
-                    distanceFromEarth = item.distanceFromEarth,
-                    isPotentiallyHazardous = item.isPotentiallyHazardous
-                )
+        return databaseAsteroids.map {
+            Asteroid(
+                id = it.id,
+                codename = it.codename,
+                closeApproachDate = it.closeApproachDate,
+                absoluteMagnitude = it.absoluteMagnitude,
+                estimatedDiameter = it.estimatedDiameter,
+                relativeVelocity = it.relativeVelocity,
+                distanceFromEarth = it.distanceFromEarth,
+                isPotentiallyHazardous = it.isPotentiallyHazardous
             )
         }
-        return asteroids
     }
 
 }
