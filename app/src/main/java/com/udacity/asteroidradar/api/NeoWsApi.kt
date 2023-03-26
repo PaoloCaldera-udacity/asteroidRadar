@@ -1,8 +1,6 @@
 package com.udacity.asteroidradar.api
 
 import com.udacity.asteroidradar.Constants
-import com.udacity.asteroidradar.repository.Asteroid
-import org.json.JSONObject
 import retrofit2.Retrofit
 import retrofit2.converter.scalars.ScalarsConverterFactory
 import retrofit2.http.GET
@@ -22,17 +20,7 @@ object NeoWsApi {
 
     interface NeoWsService {
         @GET("neo/rest/v1/feed")
-        suspend fun getAsteroids(@Query("api_key") apiKey: String): String
-    }
-
-    // Extension function for retrieving parsed result
-    suspend fun NeoWsService.getParsedAsteroids(): List<Asteroid> {
-        try {
-            val jsonResponse = getAsteroids(Constants.API_KEY)
-            return parseAsteroidsJsonResult(JSONObject(jsonResponse))
-        } catch (e: Exception) {
-            return listOf()
-        }
+        suspend fun getAsteroidsAsync(@Query("api_key") apiKey: String): String
     }
 
     val neoWsService: NeoWsService by lazy {
