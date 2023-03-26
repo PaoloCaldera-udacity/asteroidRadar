@@ -1,4 +1,4 @@
-package com.udacity.asteroidradar.domain
+package com.udacity.asteroidradar.repository
 
 import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize

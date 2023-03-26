@@ -1,14 +1,12 @@
 package com.udacity.asteroidradar.api
 
-import android.util.Log
 import com.udacity.asteroidradar.Constants
-import com.udacity.asteroidradar.domain.Asteroid
+import com.udacity.asteroidradar.repository.Asteroid
 import org.json.JSONObject
 import retrofit2.Retrofit
 import retrofit2.converter.scalars.ScalarsConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Query
-import java.text.SimpleDateFormat
 import java.util.*
 
 /**
