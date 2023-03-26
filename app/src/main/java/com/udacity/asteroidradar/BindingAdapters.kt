@@ -1,6 +1,5 @@
 package com.udacity.asteroidradar
 
-import android.content.Context
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
