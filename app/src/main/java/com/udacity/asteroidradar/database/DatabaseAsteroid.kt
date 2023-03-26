@@ -8,7 +8,7 @@ import androidx.room.PrimaryKey
 data class DatabaseAsteroid(
     @PrimaryKey val id: Long,
     @ColumnInfo(name = "codename") val codename: String,
-    @ColumnInfo(name = "close_approach_date") val closeApproachDate: Long,
+    @ColumnInfo(name = "close_approach_date") val closeApproachDate: String,
     @ColumnInfo(name = "absolute_magnitude") val absoluteMagnitude: Double,
     @ColumnInfo(name = "estimated_diameter") val estimatedDiameter: Double,
     @ColumnInfo(name = "relative_velocity") val relativeVelocity: Double,

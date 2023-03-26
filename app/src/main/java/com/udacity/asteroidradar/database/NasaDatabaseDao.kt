@@ -1,5 +1,6 @@
 package com.udacity.asteroidradar.database
 
+import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
@@ -10,9 +11,9 @@ interface NasaDatabaseDao {
 
     // Insert to the database all the asteroid data
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertAll(vararg asteroid: DatabaseAsteroid)
+    suspend fun insertAll(vararg asteroid: DatabaseAsteroid)
 
     // Recover from the database all the asteroid data
-    @Query("SELECT * FROM asteroid ORDER BY close_approach_date DESC")
-    fun selectByDate() : List<DatabaseAsteroid>
+    @Query("SELECT * FROM asteroid WHERE DATE(close_approach_date) >= DATE() ORDER BY close_approach_date DESC")
+    fun selectByDate() : LiveData<List<DatabaseAsteroid>>
 }
