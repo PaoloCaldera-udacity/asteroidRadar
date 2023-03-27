@@ -6,6 +6,7 @@ import com.udacity.asteroidradar.api.ApodApiStatus
 import com.udacity.asteroidradar.database.NasaDatabase
 import com.udacity.asteroidradar.repository.Asteroid
 import com.udacity.asteroidradar.repository.AsteroidRepository
+import com.udacity.asteroidradar.repository.PictureOfDay
 import kotlinx.coroutines.launch
 
 class MainViewModel(application: AsteroidRadarApplication) : ViewModel() {
@@ -17,13 +18,13 @@ class MainViewModel(application: AsteroidRadarApplication) : ViewModel() {
     // UI variables
     val asteroidList: LiveData<List<Asteroid>?> = repository.asteroids
 
-    private val _imageStatus = MutableLiveData<ApodApiStatus>()
-    val imageStatus: LiveData<ApodApiStatus>
+    private val _imageStatus = MutableLiveData<ApodApiStatus?>()
+    val imageStatus: LiveData<ApodApiStatus?>
         get() = _imageStatus
 
-    private val _imageUrl = MutableLiveData<String?>()
-    val imageUrl: LiveData<String?>
-        get() = _imageUrl
+    private val _image = MutableLiveData<PictureOfDay?>()
+    val image: LiveData<PictureOfDay?>
+        get() = _image
 
 
     // Navigation variables
@@ -42,7 +43,7 @@ class MainViewModel(application: AsteroidRadarApplication) : ViewModel() {
         _imageStatus.value = ApodApiStatus.LOADING
         try {
             val image = repository.getImageOfTheDay()
-            _imageUrl.value = if (image.mediaType != "image") null else image.url
+            _image.value = if (image.mediaType != "image") null else image
             _imageStatus.value = ApodApiStatus.SUCCESS
         } catch (e: Exception) {
             _imageStatus.value = ApodApiStatus.ERROR
