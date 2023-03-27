@@ -11,21 +11,25 @@ abstract class NasaDatabase: RoomDatabase() {
     abstract val dao: NasaDatabaseDao
 
     companion object {
+        @Volatile
         private var INSTANCE: NasaDatabase? = null
 
         fun getDatabase(context: Context): NasaDatabase {
-            return INSTANCE ?: synchronized(this) {
-                val instance = Room.databaseBuilder(
-                    context.applicationContext,
-                    NasaDatabase::class.java,
-                    "nasa_database"
-                ).build()
+            synchronized(this) {
+                var instance = INSTANCE
 
-                INSTANCE = instance
+                if (instance == null) {
+                    instance = Room.databaseBuilder(
+                        context.applicationContext,
+                        NasaDatabase::class.java,
+                        "nasa_database"
+                    ).fallbackToDestructiveMigration().build()
 
-                instance
+                    INSTANCE = instance
+                }
+
+                return instance
             }
         }
     }
-
 }

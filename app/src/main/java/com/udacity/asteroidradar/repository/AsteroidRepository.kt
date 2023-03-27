@@ -3,6 +3,7 @@ package com.udacity.asteroidradar.repository
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
 import com.udacity.asteroidradar.Constants
+import com.udacity.asteroidradar.api.ApodApi
 import com.udacity.asteroidradar.api.NeoWsApi
 import com.udacity.asteroidradar.api.NetworkAsteroid
 import com.udacity.asteroidradar.api.parseAsteroidsJsonResult
@@ -12,9 +13,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.json.JSONObject
 
+
 class AsteroidRepository(private val database: NasaDatabase) {
 
-    val asteroids: LiveData<List<Asteroid>> =  Transformations.map(database.dao.selectByDate()) {
+    val asteroids: LiveData<List<Asteroid>?> = Transformations.map(database.dao.selectByDate()) {
         asDomainModel(it)
     }
 
@@ -60,4 +62,8 @@ class AsteroidRepository(private val database: NasaDatabase) {
         }
     }
 
+
+    suspend fun getImageOfTheDay(): PictureOfDay {
+        return ApodApi.apodService.getImageOfTheDay(Constants.API_KEY)
+    }
 }

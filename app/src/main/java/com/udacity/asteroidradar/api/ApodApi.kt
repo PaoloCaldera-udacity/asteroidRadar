@@ -33,3 +33,5 @@ object ApodApi {
         moshiRetrofit.create(ApodService::class.java)
     }
 }
+
+enum class ApodApiStatus { LOADING, ERROR, SUCCESS }

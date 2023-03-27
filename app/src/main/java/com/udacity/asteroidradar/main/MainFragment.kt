@@ -24,15 +24,20 @@ class MainFragment : Fragment() {
     ): View {
         binding = FragmentMainBinding.inflate(inflater, container, false)
         binding.apply {
-            lifecycleOwner = viewLifecycleOwner
             viewModel = mainViewModel
+            lifecycleOwner = viewLifecycleOwner
         }
 
         val adapter = MainListAdapter(MainListAdapter.MainListItemListener {
             navigateToDetailScreen(it)
         })
-        adapter.submitList(mainViewModel.asteroids.value)
         binding.asteroidRecycler.adapter = adapter
+
+        mainViewModel.asteroidList.observe(viewLifecycleOwner) {
+            it?.let {
+                adapter.submitList(it)
+            }
+        }
 
         setHasOptionsMenu(true)
 

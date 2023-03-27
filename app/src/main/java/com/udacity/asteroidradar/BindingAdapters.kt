@@ -1,13 +1,29 @@
 package com.udacity.asteroidradar
 
+import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import com.squareup.picasso.Picasso
+import com.udacity.asteroidradar.api.ApodApiStatus
 
-@BindingAdapter("url")
-fun bindImageOfTheDay(imageView: ImageView, url: String) {
-    Picasso.with(imageView.context).load(url).into(imageView)
+@BindingAdapter("imageUrl", "status")
+fun bindImageOfTheDay(imageView: ImageView, url: String?, apiStatus: ApodApiStatus?) {
+    when(apiStatus) {
+        ApodApiStatus.LOADING -> {
+            imageView.visibility = View.VISIBLE
+            imageView.setImageResource(R.drawable.placeholder_picture_of_day)
+        }
+        ApodApiStatus.SUCCESS -> {
+            imageView.visibility = View.VISIBLE
+            url?.let {
+                Picasso.get().load(url)
+                    .placeholder(R.drawable.placeholder_picture_of_day)
+                    .into(imageView)
+            }
+        }
+        else -> { imageView.visibility = View.GONE }
+    }
 }
 
 @BindingAdapter("statusIcon")
