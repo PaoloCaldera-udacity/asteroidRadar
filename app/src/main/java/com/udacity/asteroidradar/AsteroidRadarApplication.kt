@@ -2,7 +2,6 @@ package com.udacity.asteroidradar
 
 import android.app.Application
 import androidx.work.*
-import com.udacity.asteroidradar.database.NasaDatabase
 import com.udacity.asteroidradar.repository.RefreshCacheWorker
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -12,10 +11,10 @@ import java.util.concurrent.TimeUnit
 
 class AsteroidRadarApplication : Application() {
 
-    // Initialize the database in the application context
+    /* // Initialize the database in the application context
     val database: NasaDatabase by lazy {
         NasaDatabase.getDatabase(this)
-    }
+    }*/
 
     private val applicationScope = CoroutineScope(Dispatchers.Default)
 
