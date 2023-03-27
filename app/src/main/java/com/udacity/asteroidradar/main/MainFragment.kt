@@ -29,13 +29,20 @@ class MainFragment : Fragment() {
         }
 
         val adapter = MainListAdapter(MainListAdapter.MainListItemListener {
-            navigateToDetailScreen(it)
+            mainViewModel.onStartNavigating(it)
         })
         binding.asteroidRecycler.adapter = adapter
 
         mainViewModel.asteroidList.observe(viewLifecycleOwner) {
             it?.let {
                 adapter.submitList(it)
+            }
+        }
+
+        mainViewModel.selectedAsteroid.observe(viewLifecycleOwner) {
+            it?.let {
+                navigateToDetailScreen(it)
+                mainViewModel.onStopNavigating()
             }
         }
 

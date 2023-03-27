@@ -13,9 +13,10 @@ class MainViewModel(application: AsteroidRadarApplication) : ViewModel() {
     // Initialize the repository from which to retrieve cached data
     private val repository = AsteroidRepository(NasaDatabase.getDatabase(application))
 
-    /*
-        UI variables for displaying the image of the day
-     */
+
+    // UI variables
+    val asteroidList: LiveData<List<Asteroid>?> = repository.asteroids
+
     private val _imageStatus = MutableLiveData<ApodApiStatus>()
     val imageStatus: LiveData<ApodApiStatus>
         get() = _imageStatus
@@ -24,14 +25,18 @@ class MainViewModel(application: AsteroidRadarApplication) : ViewModel() {
     val imageUrl: LiveData<String?>
         get() = _imageUrl
 
+
+    // Navigation variables
+    private val _selectedAsteroid = MutableLiveData<Asteroid?>(null)
+    val selectedAsteroid: LiveData<Asteroid?>
+        get() = _selectedAsteroid
+
     init {
         viewModelScope.launch {
             displayImage()
             repository.refreshAsteroids()
         }
     }
-
-    val asteroidList: LiveData<List<Asteroid>?> = repository.asteroids
 
     private suspend fun displayImage() {
         _imageStatus.value = ApodApiStatus.LOADING
@@ -42,6 +47,14 @@ class MainViewModel(application: AsteroidRadarApplication) : ViewModel() {
         } catch (e: Exception) {
             _imageStatus.value = ApodApiStatus.ERROR
         }
+    }
+
+    fun onStartNavigating(item: Asteroid) {
+        _selectedAsteroid.value = item
+    }
+
+    fun onStopNavigating() {
+        _selectedAsteroid.value = null
     }
 
     // ViewModelFactory class
