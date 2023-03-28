@@ -34,6 +34,12 @@ class AsteroidRepository(private val database: NasaDatabase) {
         }
     }
 
+    suspend fun clearOldData() {
+        withContext(Dispatchers.IO) {
+            database.dao.deleteOld()
+        }
+    }
+
     private fun asDatabaseModel(networkAsteroids: Array<NetworkAsteroid>): Array<DatabaseAsteroid> {
         val databaseAsteroids = ArrayList<DatabaseAsteroid>()
         for (item in networkAsteroids) {

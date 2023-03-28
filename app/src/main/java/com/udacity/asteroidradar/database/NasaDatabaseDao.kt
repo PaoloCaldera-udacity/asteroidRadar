@@ -16,4 +16,7 @@ interface NasaDatabaseDao {
     // Insert to the database all the asteroid data
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAll(vararg asteroid: DatabaseAsteroid)
+
+    @Query("DELETE FROM asteroid WHERE DATE(close_approach_date) < DATE()")
+    fun deleteOld()
 }

@@ -19,13 +19,15 @@ class MainViewModel(application: AsteroidRadarApplication) : ViewModel() {
     // UI variables
     val asteroidList: LiveData<List<Asteroid>?> = repository.asteroids
 
-    private val _asteroidListStatus = MutableLiveData<NeoWsApiStatus?>()
-    val asteroidListStatus: LiveData<NeoWsApiStatus?>
-        get() = _asteroidListStatus
-
     private val _image = MutableLiveData<PictureOfDay?>()
     val image: LiveData<PictureOfDay?>
         get() = _image
+
+
+    // Status variables
+    private val _asteroidListStatus = MutableLiveData<NeoWsApiStatus?>()
+    val asteroidListStatus: LiveData<NeoWsApiStatus?>
+        get() = _asteroidListStatus
 
     private val _imageStatus = MutableLiveData<ApodApiStatus?>()
     val imageStatus: LiveData<ApodApiStatus?>
@@ -36,6 +38,7 @@ class MainViewModel(application: AsteroidRadarApplication) : ViewModel() {
     private val _selectedAsteroid = MutableLiveData<Asteroid?>(null)
     val selectedAsteroid: LiveData<Asteroid?>
         get() = _selectedAsteroid
+
 
     init {
         viewModelScope.launch {

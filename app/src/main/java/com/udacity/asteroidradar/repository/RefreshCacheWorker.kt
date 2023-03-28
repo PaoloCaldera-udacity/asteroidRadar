@@ -19,6 +19,7 @@ class RefreshCacheWorker(context: Context, parameters: WorkerParameters) :
         return try {
             // Refresh the offline cache (the database)
             repository.refreshAsteroids()
+            repository.clearOldData()
             Result.success()
         } catch (e: Exception) {
             Result.retry()
