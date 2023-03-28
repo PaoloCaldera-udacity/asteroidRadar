@@ -8,4 +8,19 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="TextAppearance.BodyText" parent="TextAppearance.MaterialComponents.Body1">
+        <item name="android:textColor">@color/default_text_color</item>
+        <item name="android:textSize">@dimen/body_text_size</item>
+    </style>
+    <style name="TextAppearance.TitleText" parent="TextAppearance.MaterialComponents.Headline6">
+        <item name="android:textColor">@color/default_text_color</item>
+        <item name="android:textSize">@dimen/title_text_size</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+    <style name="TextAppearance.Heading" parent="TextAppearance.MaterialComponents.Headline4">
+        <item name="android:textColor">@color/default_text_color</item>
+        <item name="android:textSize">@dimen/heading_text_size</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
 </resources>

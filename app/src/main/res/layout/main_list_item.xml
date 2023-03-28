@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="asteroid"
             type="com.udacity.asteroidradar.repository.Asteroid" />
+
         <variable
             name="itemListener"
             type="com.udacity.asteroidradar.main.MainListAdapter.MainListItemListener" />
@@ -15,43 +17,42 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
         android:onClick="@{() -> itemListener.onClick(asteroid)}"
-        android:padding="8dp">
+        android:padding="@dimen/normal_padding">
 
         <TextView
             android:id="@+id/name_textView"
+            style="@style/TextAppearance.TitleText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:textStyle="bold"
-            android:textSize="16sp"
+            android:layout_margin="@dimen/normal_margin"
             android:text="@{asteroid.codename}"
-            android:textColor="#FFFFFF"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="(2015 XK351)" />
 
         <TextView
             android:id="@+id/date_textView"
+            style="@style/TextAppearance.BodyText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
+            android:layout_margin="@dimen/normal_margin"
             android:text="@{asteroid.closeApproachDate}"
-            android:textColor="#FFFFFF"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/name_textView"
-            app:layout_constraintBottom_toBottomOf="parent"
             tools:text="2020-02-08" />
 
         <ImageView
             android:id="@+id/potentially_hazardous_imageView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            app:statusIcon="@{asteroid.potentiallyHazardous}"
+            android:layout_margin="@dimen/normal_margin"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            app:statusIcon="@{asteroid.potentiallyHazardous}"
             tools:src="@drawable/ic_status_potentially_hazardous" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
