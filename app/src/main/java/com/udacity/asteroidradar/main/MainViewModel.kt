@@ -3,6 +3,7 @@ package com.udacity.asteroidradar.main
 import androidx.lifecycle.*
 import com.udacity.asteroidradar.AsteroidRadarApplication
 import com.udacity.asteroidradar.api.ApodApiStatus
+import com.udacity.asteroidradar.api.NeoWsApiStatus
 import com.udacity.asteroidradar.database.NasaDatabase
 import com.udacity.asteroidradar.repository.Asteroid
 import com.udacity.asteroidradar.repository.AsteroidRepository
@@ -18,13 +19,17 @@ class MainViewModel(application: AsteroidRadarApplication) : ViewModel() {
     // UI variables
     val asteroidList: LiveData<List<Asteroid>?> = repository.asteroids
 
-    private val _imageStatus = MutableLiveData<ApodApiStatus?>()
-    val imageStatus: LiveData<ApodApiStatus?>
-        get() = _imageStatus
+    private val _asteroidListStatus = MutableLiveData<NeoWsApiStatus?>()
+    val asteroidListStatus: LiveData<NeoWsApiStatus?>
+        get() = _asteroidListStatus
 
     private val _image = MutableLiveData<PictureOfDay?>()
     val image: LiveData<PictureOfDay?>
         get() = _image
+
+    private val _imageStatus = MutableLiveData<ApodApiStatus?>()
+    val imageStatus: LiveData<ApodApiStatus?>
+        get() = _imageStatus
 
 
     // Navigation variables
@@ -35,7 +40,7 @@ class MainViewModel(application: AsteroidRadarApplication) : ViewModel() {
     init {
         viewModelScope.launch {
             displayImage()
-            repository.refreshAsteroids()
+            displayAsteroidList()
         }
     }
 
@@ -47,6 +52,16 @@ class MainViewModel(application: AsteroidRadarApplication) : ViewModel() {
             _imageStatus.value = ApodApiStatus.SUCCESS
         } catch (e: Exception) {
             _imageStatus.value = ApodApiStatus.ERROR
+        }
+    }
+
+    private suspend fun displayAsteroidList() {
+        _asteroidListStatus.value = NeoWsApiStatus.LOADING
+        try {
+            repository.refreshAsteroids()
+            _asteroidListStatus.value = NeoWsApiStatus.SUCCESS
+        } catch (e: Exception) {
+            _asteroidListStatus.value = NeoWsApiStatus.ERROR
         }
     }
 

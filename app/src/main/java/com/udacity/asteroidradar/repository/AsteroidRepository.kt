@@ -12,6 +12,7 @@ import com.udacity.asteroidradar.database.NasaDatabase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.json.JSONObject
+import timber.log.Timber
 
 
 class AsteroidRepository(private val database: NasaDatabase) {
@@ -22,9 +23,14 @@ class AsteroidRepository(private val database: NasaDatabase) {
 
     suspend fun refreshAsteroids() {
         withContext(Dispatchers.IO) {
-            val jsonResult = NeoWsApi.neoWsService.getAsteroidsAsync(Constants.API_KEY)
-            val networkResult = parseAsteroidsJsonResult(JSONObject(jsonResult)).toTypedArray()
-            database.dao.insertAll(*asDatabaseModel(networkResult))
+            try {
+                val jsonResult = NeoWsApi.neoWsService.getAsteroidsAsync(Constants.API_KEY)
+                val networkResult = parseAsteroidsJsonResult(JSONObject(jsonResult)).toTypedArray()
+                database.dao.insertAll(*asDatabaseModel(networkResult))
+            } catch (e: Exception) {
+                Timber.e("Unable to refresh offline cache: ${e.message}")
+                throw (e)
+            }
         }
     }
 

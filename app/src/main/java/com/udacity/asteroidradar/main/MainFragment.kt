@@ -5,10 +5,12 @@ import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.snackbar.Snackbar
 import com.squareup.picasso.Picasso
 import com.udacity.asteroidradar.AsteroidRadarApplication
 import com.udacity.asteroidradar.R
 import com.udacity.asteroidradar.api.ApodApiStatus
+import com.udacity.asteroidradar.api.NeoWsApiStatus
 import com.udacity.asteroidradar.databinding.FragmentMainBinding
 import com.udacity.asteroidradar.repository.Asteroid
 
@@ -35,6 +37,16 @@ class MainFragment : Fragment() {
         })
         binding.asteroidRecycler.adapter = adapter
 
+        // Observe the asteroid list status for refreshing the offline cache
+        mainViewModel.asteroidListStatus.observe(viewLifecycleOwner) {
+            when (it) {
+                NeoWsApiStatus.ERROR -> {
+                    displaySnackbar()
+                }
+                else -> {}
+            }
+        }
+
         // Observe the image status for displaying the image and update the progress bar
         mainViewModel.imageStatus.observe(viewLifecycleOwner) {
             when (it) {
@@ -50,7 +62,11 @@ class MainFragment : Fragment() {
                             .into(binding.activityMainImageOfTheDay)
                     }
                 }
-                else -> { binding.statusLoadingWheel.visibility = View.GONE }
+                else -> binding.apply {
+                    statusLoadingWheel.visibility = View.GONE
+                    activityMainImageOfTheDayLayout.visibility = View.GONE
+                    displaySnackbar()
+                }
             }
         }
 
@@ -86,5 +102,13 @@ class MainFragment : Fragment() {
     private fun navigateToDetailScreen(asteroid: Asteroid) {
         val action = MainFragmentDirections.actionShowDetail(asteroid)
         findNavController().navigate(action)
+    }
+
+    private fun displaySnackbar() {
+        Snackbar.make(
+            binding.root,
+            resources.getString(R.string.snackbar_text),
+            Snackbar.LENGTH_LONG
+        ).show()
     }
 }

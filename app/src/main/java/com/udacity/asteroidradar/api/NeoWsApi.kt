@@ -27,3 +27,5 @@ object NeoWsApi {
         scalarRetrofit.create(NeoWsService::class.java)
     }
 }
+
+enum class NeoWsApiStatus { LOADING, ERROR, SUCCESS }
