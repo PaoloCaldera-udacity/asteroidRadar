@@ -40,6 +40,12 @@ class MainViewModel(application: AsteroidRadarApplication) : ViewModel() {
         get() = _selectedAsteroid
 
 
+    // Trigger variables
+    private val _snackbarTrigger = MutableLiveData(false)
+    val snackbarTrigger: LiveData<Boolean>
+        get() = _snackbarTrigger
+
+
     init {
         viewModelScope.launch {
             displayImage()
@@ -55,6 +61,7 @@ class MainViewModel(application: AsteroidRadarApplication) : ViewModel() {
             _imageStatus.value = ApodApiStatus.SUCCESS
         } catch (e: Exception) {
             _imageStatus.value = ApodApiStatus.ERROR
+            _snackbarTrigger.value = true
         }
     }
 
@@ -65,8 +72,10 @@ class MainViewModel(application: AsteroidRadarApplication) : ViewModel() {
             _asteroidListStatus.value = NeoWsApiStatus.SUCCESS
         } catch (e: Exception) {
             _asteroidListStatus.value = NeoWsApiStatus.ERROR
+            _snackbarTrigger.value = true
         }
     }
+
 
     fun onStartNavigating(item: Asteroid) {
         _selectedAsteroid.value = item
@@ -75,6 +84,12 @@ class MainViewModel(application: AsteroidRadarApplication) : ViewModel() {
     fun onStopNavigating() {
         _selectedAsteroid.value = null
     }
+
+
+    fun onSnackbarDismissed() {
+        _snackbarTrigger.value = false
+    }
+
 
     // ViewModelFactory class
     class MainViewModelFactory(private val application: AsteroidRadarApplication) : ViewModelProvider.Factory {
@@ -85,6 +100,5 @@ class MainViewModel(application: AsteroidRadarApplication) : ViewModel() {
             }
             throw IllegalArgumentException("ViewModel class not found: unable to create ViewModel")
         }
-
     }
 }

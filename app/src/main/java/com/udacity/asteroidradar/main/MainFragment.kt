@@ -10,7 +10,6 @@ import com.squareup.picasso.Picasso
 import com.udacity.asteroidradar.AsteroidRadarApplication
 import com.udacity.asteroidradar.R
 import com.udacity.asteroidradar.api.ApodApiStatus
-import com.udacity.asteroidradar.api.NeoWsApiStatus
 import com.udacity.asteroidradar.databinding.FragmentMainBinding
 import com.udacity.asteroidradar.repository.Asteroid
 
@@ -32,21 +31,6 @@ class MainFragment : Fragment() {
             lifecycleOwner = viewLifecycleOwner
         }
 
-        val adapter = MainListAdapter(MainListAdapter.MainListItemListener {
-            mainViewModel.onStartNavigating(it)
-        })
-        binding.asteroidRecycler.adapter = adapter
-
-        // Observe the asteroid list status for refreshing the offline cache
-        mainViewModel.asteroidListStatus.observe(viewLifecycleOwner) {
-            when (it) {
-                NeoWsApiStatus.ERROR -> {
-                    displaySnackbar()
-                }
-                else -> {}
-            }
-        }
-
         // Observe the image status for displaying the image and update the progress bar
         mainViewModel.imageStatus.observe(viewLifecycleOwner) {
             when (it) {
@@ -65,23 +49,37 @@ class MainFragment : Fragment() {
                 else -> binding.apply {
                     statusLoadingWheel.visibility = View.GONE
                     activityMainImageOfTheDayLayout.visibility = View.GONE
-                    displaySnackbar()
                 }
             }
         }
 
-        // Observe the list of asteroids
-        mainViewModel.asteroidList.observe(viewLifecycleOwner) {
-            it?.let {
-                adapter.submitList(it)
+        // Observe the snackbar event trigger for triggering the snackbar
+        mainViewModel.snackbarTrigger.observe(viewLifecycleOwner) {
+            if (it == true) {
+                displaySnackbar()
+                mainViewModel.onSnackbarDismissed()
             }
         }
+
 
         // Observe the selected asteroid variable for navigation
         mainViewModel.selectedAsteroid.observe(viewLifecycleOwner) {
             it?.let {
                 navigateToDetailScreen(it)
                 mainViewModel.onStopNavigating()
+            }
+        }
+
+        // Set the recycler view adapter
+        val adapter = MainListAdapter(MainListAdapter.MainListItemListener {
+            mainViewModel.onStartNavigating(it)
+        })
+        binding.asteroidRecycler.adapter = adapter
+
+        // Observe the list of asteroids
+        mainViewModel.asteroidList.observe(viewLifecycleOwner) {
+            it?.let {
+                adapter.submitList(it)
             }
         }
 
