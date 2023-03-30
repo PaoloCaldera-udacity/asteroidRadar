@@ -36,14 +36,24 @@ class MainFragment : Fragment() {
             when (it) {
                 ApodApiStatus.LOADING -> binding.apply {
                     statusLoadingWheel.visibility = View.VISIBLE
-                    activityMainImageOfTheDay.setImageResource(R.drawable.placeholder_picture_of_day)
+                    activityMainImageOfTheDay.apply {
+                        setImageResource(R.drawable.placeholder_picture_of_day)
+                        contentDescription =
+                            resources.getString(R.string.this_is_nasa_s_picture_of_day_showing_nothing_yet)
+                    }
                 }
                 ApodApiStatus.SUCCESS -> {
-                    binding.statusLoadingWheel.visibility = View.GONE
                     mainViewModel.image.value?.let {
                         Picasso.get().load(it.url)
                             .placeholder(R.drawable.placeholder_picture_of_day)
                             .into(binding.activityMainImageOfTheDay)
+                    }
+                    binding.apply {
+                        activityMainImageOfTheDay.contentDescription = resources.getString(
+                            R.string.nasa_picture_of_day_content_description_format,
+                            mainViewModel.image.value?.title
+                        )
+                        statusLoadingWheel.visibility = View.GONE
                     }
                 }
                 else -> binding.apply {

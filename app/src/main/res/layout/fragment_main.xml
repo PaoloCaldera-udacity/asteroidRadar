@@ -29,7 +29,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:adjustViewBounds="true"
-                android:contentDescription="@{viewModel.image.title}"
+                android:contentDescription="@string/this_is_nasa_s_picture_of_day_showing_nothing_yet"
                 android:scaleType="centerCrop"
                 tools:srcCompat="@drawable/placeholder_picture_of_day" />
 
@@ -40,7 +40,6 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
                 android:background="#55010613"
-                android:hint="@string/image_of_the_day"
                 android:padding="@dimen/large_padding"
                 android:text="@string/image_of_the_day" />
         </FrameLayout>

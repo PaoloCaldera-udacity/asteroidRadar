@@ -27,9 +27,15 @@ class DetailFragment : Fragment() {
         binding.apply {
             lifecycleOwner = viewLifecycleOwner
             asteroid = selectedAsteroid
+
             helpButton.setOnClickListener {
                 displayAstronomicalUnitExplanationDialog()
             }
+
+            activityMainImageOfTheDay.contentDescription = resources.getString(
+                if (selectedAsteroid.isPotentiallyHazardous) R.string.potentially_hazardous_asteroid_image
+                else R.string.not_hazardous_asteroid_image
+            )
         }
 
         return binding.root
