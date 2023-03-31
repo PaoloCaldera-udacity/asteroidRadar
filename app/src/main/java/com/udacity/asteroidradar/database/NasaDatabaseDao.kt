@@ -11,9 +11,13 @@ interface NasaDatabaseDao {
 
     // Recover from the database all the asteroid data
     @Query("SELECT * FROM asteroid WHERE DATE(close_approach_date) >= DATE() ORDER BY DATE(close_approach_date) ASC")
-    fun selectByDate() : LiveData<List<DatabaseAsteroid>>
+    fun selectByDate(): LiveData<List<DatabaseAsteroid>>
 
     // Insert to the database all the asteroid data
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAll(vararg asteroid: DatabaseAsteroid)
+
+    // Delete from the database all the asteroids before today
+    @Query("DELETE FROM asteroid WHERE DATE(close_approach_date) < DATE()")
+    fun deleteOld()
 }

@@ -3,6 +3,7 @@ package com.udacity.asteroidradar.main
 import androidx.lifecycle.*
 import com.udacity.asteroidradar.AsteroidRadarApplication
 import com.udacity.asteroidradar.api.ApodApiStatus
+import com.udacity.asteroidradar.api.NeoWsApiStatus
 import com.udacity.asteroidradar.database.NasaDatabase
 import com.udacity.asteroidradar.repository.Asteroid
 import com.udacity.asteroidradar.repository.AsteroidRepository
@@ -18,13 +19,19 @@ class MainViewModel(application: AsteroidRadarApplication) : ViewModel() {
     // UI variables
     val asteroidList: LiveData<List<Asteroid>?> = repository.asteroids
 
-    private val _imageStatus = MutableLiveData<ApodApiStatus?>()
-    val imageStatus: LiveData<ApodApiStatus?>
-        get() = _imageStatus
-
     private val _image = MutableLiveData<PictureOfDay?>()
     val image: LiveData<PictureOfDay?>
         get() = _image
+
+
+    // Status variables
+    private val _asteroidListStatus = MutableLiveData<NeoWsApiStatus?>()
+    val asteroidListStatus: LiveData<NeoWsApiStatus?>
+        get() = _asteroidListStatus
+
+    private val _imageStatus = MutableLiveData<ApodApiStatus?>()
+    val imageStatus: LiveData<ApodApiStatus?>
+        get() = _imageStatus
 
 
     // Navigation variables
@@ -32,13 +39,21 @@ class MainViewModel(application: AsteroidRadarApplication) : ViewModel() {
     val selectedAsteroid: LiveData<Asteroid?>
         get() = _selectedAsteroid
 
+
+    // Trigger variables
+    private val _snackbarTrigger = MutableLiveData(false)
+    val snackbarTrigger: LiveData<Boolean>
+        get() = _snackbarTrigger
+
+
     init {
         viewModelScope.launch {
             displayImage()
-            repository.refreshAsteroids()
+            displayAsteroidList()
         }
     }
 
+    // Display the image of the day, based on the APOD api status
     private suspend fun displayImage() {
         _imageStatus.value = ApodApiStatus.LOADING
         try {
@@ -47,19 +62,42 @@ class MainViewModel(application: AsteroidRadarApplication) : ViewModel() {
             _imageStatus.value = ApodApiStatus.SUCCESS
         } catch (e: Exception) {
             _imageStatus.value = ApodApiStatus.ERROR
+            _snackbarTrigger.value = true
         }
     }
 
+    // Display the asteroid list, based on the NeoWs api status
+    private suspend fun displayAsteroidList() {
+        _asteroidListStatus.value = NeoWsApiStatus.LOADING
+        try {
+            repository.refreshAsteroids()
+            _asteroidListStatus.value = NeoWsApiStatus.SUCCESS
+        } catch (e: Exception) {
+            _asteroidListStatus.value = NeoWsApiStatus.ERROR
+            _snackbarTrigger.value = true
+        }
+    }
+
+
+    // Set the selected asteroid as the trigger variable
     fun onStartNavigating(item: Asteroid) {
         _selectedAsteroid.value = item
     }
 
+    // Set the selected asteroid as nillable when navigation is done
     fun onStopNavigating() {
         _selectedAsteroid.value = null
     }
 
+    // Set the snackbar trigger variable to false when snackbar is dismissed
+    fun onSnackbarDismissed() {
+        _snackbarTrigger.value = false
+    }
+
+
     // ViewModelFactory class
-    class MainViewModelFactory(private val application: AsteroidRadarApplication) : ViewModelProvider.Factory {
+    class MainViewModelFactory(private val application: AsteroidRadarApplication) :
+        ViewModelProvider.Factory {
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
             if (modelClass.isAssignableFrom(MainViewModel::class.java)) {
                 @Suppress("UNCHECKED_CAST")
@@ -67,6 +105,5 @@ class MainViewModel(application: AsteroidRadarApplication) : ViewModel() {
             }
             throw IllegalArgumentException("ViewModel class not found: unable to create ViewModel")
         }
-
     }
 }

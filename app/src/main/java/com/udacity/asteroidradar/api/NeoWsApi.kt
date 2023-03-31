@@ -19,6 +19,7 @@ object NeoWsApi {
         .build()
 
     interface NeoWsService {
+        // Get all the near earth asteroids in the next 7 days
         @GET("neo/rest/v1/feed")
         suspend fun getAsteroidsAsync(@Query("api_key") apiKey: String): String
     }
@@ -27,3 +28,5 @@ object NeoWsApi {
         scalarRetrofit.create(NeoWsService::class.java)
     }
 }
+
+enum class NeoWsApiStatus { LOADING, ERROR, SUCCESS }
