@@ -8,6 +8,7 @@ import com.udacity.asteroidradar.database.NasaDatabase
 import com.udacity.asteroidradar.repository.Asteroid
 import com.udacity.asteroidradar.repository.AsteroidRepository
 import com.udacity.asteroidradar.repository.PictureOfDay
+import com.udacity.asteroidradar.repository.SearchMode
 import kotlinx.coroutines.launch
 
 class MainViewModel(application: AsteroidRadarApplication) : ViewModel() {
@@ -16,8 +17,17 @@ class MainViewModel(application: AsteroidRadarApplication) : ViewModel() {
     private val repository = AsteroidRepository(NasaDatabase.getDatabase(application))
 
 
+    // Search variable
+    private val searchMode = MutableLiveData(SearchMode.TODAY)
+
     // UI variables
-    val asteroidList: LiveData<List<Asteroid>?> = repository.asteroids
+    val asteroidList: LiveData<List<Asteroid>?> = Transformations.switchMap(searchMode) {
+        when (it!!) {
+            SearchMode.NEXT_WEEK -> repository.nextWeekAsteroids
+            SearchMode.TODAY -> repository.todayAsteroids
+            SearchMode.ALL -> repository.allAsteroids
+        }
+    }
 
     private val _image = MutableLiveData<PictureOfDay?>()
     val image: LiveData<PictureOfDay?>
@@ -78,6 +88,11 @@ class MainViewModel(application: AsteroidRadarApplication) : ViewModel() {
         }
     }
 
+
+    // Change the search mode according to the option selected in the UI
+    fun changeSearchMode(mode: SearchMode) {
+        searchMode.value = mode
+    }
 
     // Set the selected asteroid as the trigger variable
     fun onStartNavigating(item: Asteroid) {

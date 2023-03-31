@@ -17,10 +17,18 @@ import timber.log.Timber
 
 class AsteroidRepository(private val database: NasaDatabase) {
 
-    // Get the data from the offline cache
-    val asteroids: LiveData<List<Asteroid>?> = Transformations.map(database.dao.selectByDate()) {
-        asDomainModel(it)
-    }
+    // Get the next-week data from the offline cache
+    val nextWeekAsteroids: LiveData<List<Asteroid>?> =
+        Transformations.map(database.dao.selectNextWeek()) { asDomainModel(it) }
+
+    // Get the today data from the offline cache
+    val todayAsteroids: LiveData<List<Asteroid>?> =
+        Transformations.map(database.dao.selectToday()) { asDomainModel(it) }
+
+    // Get the whole data from the offline cache
+    val allAsteroids: LiveData<List<Asteroid>?> =
+        Transformations.map(database.dao.selectAll()) { asDomainModel(it) }
+
 
     // Refresh the offline cache with the new data coming from the network
     suspend fun refreshAsteroids() {
@@ -85,3 +93,5 @@ class AsteroidRepository(private val database: NasaDatabase) {
         return ApodApi.apodService.getImageOfTheDay(Constants.API_KEY)
     }
 }
+
+enum class SearchMode { NEXT_WEEK, TODAY, ALL }

@@ -12,6 +12,7 @@ import com.udacity.asteroidradar.R
 import com.udacity.asteroidradar.api.ApodApiStatus
 import com.udacity.asteroidradar.databinding.FragmentMainBinding
 import com.udacity.asteroidradar.repository.Asteroid
+import com.udacity.asteroidradar.repository.SearchMode
 
 class MainFragment : Fragment() {
 
@@ -104,6 +105,14 @@ class MainFragment : Fragment() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        mainViewModel.changeSearchMode(
+            when (item.itemId) {
+                R.id.show_week -> SearchMode.NEXT_WEEK
+                R.id.show_today -> SearchMode.TODAY
+                R.id.show_all -> SearchMode.ALL
+                else -> return false
+            }
+        )
         return true
     }
 
