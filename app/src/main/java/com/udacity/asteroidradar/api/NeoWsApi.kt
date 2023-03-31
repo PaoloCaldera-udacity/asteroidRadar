@@ -21,7 +21,11 @@ object NeoWsApi {
     interface NeoWsService {
         // Get all the near earth asteroids in the next 7 days
         @GET("neo/rest/v1/feed")
-        suspend fun getAsteroidsAsync(@Query("api_key") apiKey: String): String
+        suspend fun getAsteroids(
+            @Query("api_key") apiKey: String,
+            @Query("start_date") startDate: String,
+            @Query("end_date") endDate: String
+        ): String
     }
 
     val neoWsService: NeoWsService by lazy {

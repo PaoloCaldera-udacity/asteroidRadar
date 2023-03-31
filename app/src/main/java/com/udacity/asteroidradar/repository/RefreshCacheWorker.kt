@@ -3,6 +3,7 @@ package com.udacity.asteroidradar.repository
 import android.content.Context
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
+import com.udacity.asteroidradar.api.getFutureDate
 import com.udacity.asteroidradar.database.NasaDatabase
 
 class RefreshCacheWorker(context: Context, parameters: WorkerParameters) :
@@ -18,7 +19,7 @@ class RefreshCacheWorker(context: Context, parameters: WorkerParameters) :
 
         return try {
             // Refresh the offline cache (the database)
-            repository.refreshAsteroids()
+            repository.refreshAsteroids(getFutureDate(1), getFutureDate(7))
             repository.clearOldData()
             Result.success()
         } catch (e: Exception) {

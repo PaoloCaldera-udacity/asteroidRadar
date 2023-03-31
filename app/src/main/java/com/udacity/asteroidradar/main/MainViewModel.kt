@@ -4,6 +4,7 @@ import androidx.lifecycle.*
 import com.udacity.asteroidradar.AsteroidRadarApplication
 import com.udacity.asteroidradar.api.ApodApiStatus
 import com.udacity.asteroidradar.api.NeoWsApiStatus
+import com.udacity.asteroidradar.api.getFutureDate
 import com.udacity.asteroidradar.database.NasaDatabase
 import com.udacity.asteroidradar.repository.Asteroid
 import com.udacity.asteroidradar.repository.AsteroidRepository
@@ -18,7 +19,7 @@ class MainViewModel(application: AsteroidRadarApplication) : ViewModel() {
 
 
     // Search variable
-    private val searchMode = MutableLiveData(SearchMode.TODAY)
+    private val searchMode = MutableLiveData(SearchMode.ALL)
 
     // UI variables
     val asteroidList: LiveData<List<Asteroid>?> = Transformations.switchMap(searchMode) {
@@ -80,7 +81,7 @@ class MainViewModel(application: AsteroidRadarApplication) : ViewModel() {
     private suspend fun displayAsteroidList() {
         _asteroidListStatus.value = NeoWsApiStatus.LOADING
         try {
-            repository.refreshAsteroids()
+            repository.refreshAsteroids(getFutureDate(0), getFutureDate(7))
             _asteroidListStatus.value = NeoWsApiStatus.SUCCESS
         } catch (e: Exception) {
             _asteroidListStatus.value = NeoWsApiStatus.ERROR

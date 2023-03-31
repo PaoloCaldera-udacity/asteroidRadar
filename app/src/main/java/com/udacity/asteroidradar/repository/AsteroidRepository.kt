@@ -3,10 +3,7 @@ package com.udacity.asteroidradar.repository
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
 import com.udacity.asteroidradar.Constants
-import com.udacity.asteroidradar.api.ApodApi
-import com.udacity.asteroidradar.api.NeoWsApi
-import com.udacity.asteroidradar.api.NetworkAsteroid
-import com.udacity.asteroidradar.api.parseAsteroidsJsonResult
+import com.udacity.asteroidradar.api.*
 import com.udacity.asteroidradar.database.DatabaseAsteroid
 import com.udacity.asteroidradar.database.NasaDatabase
 import kotlinx.coroutines.Dispatchers
@@ -31,10 +28,12 @@ class AsteroidRepository(private val database: NasaDatabase) {
 
 
     // Refresh the offline cache with the new data coming from the network
-    suspend fun refreshAsteroids() {
+    suspend fun refreshAsteroids(startDate: String, endDate: String) {
         withContext(Dispatchers.IO) {
             try {
-                val jsonResult = NeoWsApi.neoWsService.getAsteroidsAsync(Constants.API_KEY)
+                val jsonResult = NeoWsApi.neoWsService.getAsteroids(
+                    Constants.API_KEY, startDate, endDate
+                )
                 val networkResult = parseAsteroidsJsonResult(JSONObject(jsonResult)).toTypedArray()
                 database.dao.insertAll(*asDatabaseModel(networkResult))
             } catch (e: Exception) {

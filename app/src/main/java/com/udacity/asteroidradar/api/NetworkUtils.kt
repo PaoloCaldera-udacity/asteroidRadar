@@ -57,3 +57,14 @@ private fun getNextSevenDaysFormattedDates(): ArrayList<String> {
 
     return formattedDateList
 }
+
+fun getFutureDate(numberOfDays: Int?): String {
+    val calendar = Calendar.getInstance()
+
+    if (numberOfDays != null)
+        calendar.add(Calendar.DAY_OF_YEAR, numberOfDays)
+
+    val desiredDate = calendar.time
+    val dateFormat = SimpleDateFormat(Constants.API_QUERY_DATE_FORMAT, Locale.getDefault())
+    return dateFormat.format(desiredDate)
+}
