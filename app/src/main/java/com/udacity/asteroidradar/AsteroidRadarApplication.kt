@@ -11,11 +11,7 @@ import java.util.concurrent.TimeUnit
 
 class AsteroidRadarApplication : Application() {
 
-    /* // Initialize the database in the application context
-    val database: NasaDatabase by lazy {
-        NasaDatabase.getDatabase(this)
-    }*/
-
+    // Set the coroutine scope to launch the worker
     private val applicationScope = CoroutineScope(Dispatchers.Default)
 
     override fun onCreate() {
@@ -28,15 +24,18 @@ class AsteroidRadarApplication : Application() {
 
     private fun requestPeriodicCacheRefresh() {
         applicationScope.launch {
+            // Set plug-in charge and network constraints
             val constraints = Constraints.Builder()
                 .setRequiresCharging(true)
                 .setRequiredNetworkType(NetworkType.CONNECTED)
                 .build()
 
+            // Set the instance of the work request, using the PeriodicWorkRequestBuilder
             val workRequest = PeriodicWorkRequestBuilder<RefreshCacheWorker>(
                 1, TimeUnit.DAYS
             ).setConstraints(constraints).build()
 
+            // Use the WorkManager to launch the periodic work
             WorkManager.getInstance().enqueueUniquePeriodicWork(
                 RefreshCacheWorker.WORK_NAME,
                 ExistingPeriodicWorkPolicy.KEEP,

@@ -32,6 +32,7 @@ class DetailFragment : Fragment() {
                 displayAstronomicalUnitExplanationDialog()
             }
 
+            // Insert the content description for the potentially/not hazardous image
             activityMainImageOfTheDay.contentDescription = resources.getString(
                 if (selectedAsteroid.isPotentiallyHazardous) R.string.potentially_hazardous_asteroid_image
                 else R.string.not_hazardous_asteroid_image

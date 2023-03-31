@@ -112,6 +112,7 @@ class MainFragment : Fragment() {
         findNavController().navigate(action)
     }
 
+     // Display a snackbar in case of no internet connection
     private fun displaySnackbar() {
         Snackbar.make(
             binding.root,

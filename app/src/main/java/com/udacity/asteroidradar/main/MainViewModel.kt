@@ -53,6 +53,7 @@ class MainViewModel(application: AsteroidRadarApplication) : ViewModel() {
         }
     }
 
+    // Display the image of the day, based on the APOD api status
     private suspend fun displayImage() {
         _imageStatus.value = ApodApiStatus.LOADING
         try {
@@ -65,6 +66,7 @@ class MainViewModel(application: AsteroidRadarApplication) : ViewModel() {
         }
     }
 
+    // Display the asteroid list, based on the NeoWs api status
     private suspend fun displayAsteroidList() {
         _asteroidListStatus.value = NeoWsApiStatus.LOADING
         try {
@@ -77,15 +79,17 @@ class MainViewModel(application: AsteroidRadarApplication) : ViewModel() {
     }
 
 
+    // Set the selected asteroid as the trigger variable
     fun onStartNavigating(item: Asteroid) {
         _selectedAsteroid.value = item
     }
 
+    // Set the selected asteroid as nillable when navigation is done
     fun onStopNavigating() {
         _selectedAsteroid.value = null
     }
 
-
+    // Set the snackbar trigger variable to false when snackbar is dismissed
     fun onSnackbarDismissed() {
         _snackbarTrigger.value = false
     }

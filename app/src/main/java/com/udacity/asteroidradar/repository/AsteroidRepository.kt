@@ -17,10 +17,12 @@ import timber.log.Timber
 
 class AsteroidRepository(private val database: NasaDatabase) {
 
+    // Get the data from the offline cache
     val asteroids: LiveData<List<Asteroid>?> = Transformations.map(database.dao.selectByDate()) {
         asDomainModel(it)
     }
 
+    // Refresh the offline cache with the new data coming from the network
     suspend fun refreshAsteroids() {
         withContext(Dispatchers.IO) {
             try {
@@ -34,12 +36,14 @@ class AsteroidRepository(private val database: NasaDatabase) {
         }
     }
 
+    // Delete old data from the offline cache
     suspend fun clearOldData() {
         withContext(Dispatchers.IO) {
             database.dao.deleteOld()
         }
     }
 
+    // Convert the network variable and the database variable
     private fun asDatabaseModel(networkAsteroids: Array<NetworkAsteroid>): Array<DatabaseAsteroid> {
         val databaseAsteroids = ArrayList<DatabaseAsteroid>()
         for (item in networkAsteroids) {
@@ -59,6 +63,7 @@ class AsteroidRepository(private val database: NasaDatabase) {
         return databaseAsteroids.toTypedArray()
     }
 
+    // Convert the database variable into the domain variable
     private fun asDomainModel(databaseAsteroids: List<DatabaseAsteroid>): List<Asteroid> {
         return databaseAsteroids.map {
             Asteroid(
@@ -75,6 +80,7 @@ class AsteroidRepository(private val database: NasaDatabase) {
     }
 
 
+    // Get the image of the day from the network
     suspend fun getImageOfTheDay(): PictureOfDay {
         return ApodApi.apodService.getImageOfTheDay(Constants.API_KEY)
     }
