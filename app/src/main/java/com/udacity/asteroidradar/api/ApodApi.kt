@@ -26,7 +26,7 @@ object ApodApi {
 
     interface ApodService {
         @GET("planetary/apod")
-        suspend fun getImageOfTheDay(@Query("api_key") apiKey: String) : PictureOfDay
+        suspend fun getImageOfTheDay(@Query("api_key") apiKey: String): PictureOfDay
     }
 
     val apodService: ApodService by lazy {

@@ -6,7 +6,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 
 @Database(entities = [DatabaseAsteroid::class], version = 1, exportSchema = false)
-abstract class NasaDatabase: RoomDatabase() {
+abstract class NasaDatabase : RoomDatabase() {
 
     abstract val dao: NasaDatabaseDao
 

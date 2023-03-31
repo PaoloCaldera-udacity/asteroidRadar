@@ -93,8 +93,8 @@
                         android:id="@+id/help_button"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:padding="@dimen/large_padding"
                         android:contentDescription="@string/astronomical_unit_explanation_button"
+                        android:padding="@dimen/large_padding"
                         app:srcCompat="@drawable/ic_help_circle" />
 
                 </LinearLayout>
@@ -107,8 +107,8 @@
                     android:text="@string/estimated_diameter_title" />
 
                 <TextView
-                    style="@style/TextAppearance.BodyText"
                     android:id="@+id/estimated_diameter"
+                    style="@style/TextAppearance.BodyText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/narrow_margin"
