@@ -11,7 +11,6 @@ import kotlinx.coroutines.withContext
 import org.json.JSONObject
 import timber.log.Timber
 
-
 class AsteroidRepository(private val database: NasaDatabase) {
 
     // Get the next-week data from the offline cache
