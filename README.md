@@ -1,6 +1,6 @@
 # Asteroid Radar
 
-ShoeStore is the second project of the Android Kotlin Developer nanodegree provided by Udacity. It is a test project for the first chapter of the course, Developing Android Apps with Kotlin. The project focuses on displaying asteroid data loaded from the internet and saved into an offline cache, by exploiting Kotlin coroutines. Moreover, it focuses on designing an app for everyone, taking into account RTL support and Talkback. In addition to the ones listed in Shoe Store, the project demonstrates the ability to exploit the following components and libraries:
+ShoeStore is the second project of the Android Kotlin Developer nanodegree provided by Udacity. It is a test project for the first chapter of the course, Developing Android Apps with Kotlin. The project focuses on displaying asteroid data loaded from the internet and saved into an offline cache, by exploiting Kotlin coroutines. Moreover, it focuses on designing an app for everyone, taking into account RTL support and Talkback. In addition to the ones listed in [Shoe Store](https://github.com/PaoloCaldera/shoeStore), the project demonstrates the ability to exploit the following components and libraries:
 
 * [Retrofit](https://square.github.io/retrofit/), for HTTP REST interactions
 * [Moshi](https://github.com/square/moshi), for converting JSON responses to Kotlin classes
@@ -24,4 +24,4 @@ For complete usage of the application, be sure that the device or emulator is co
 
 ## License
 
-Asteroid Radar is a public project that can be downloaded and modified under the terms and conditions of the MIT License.
+Asteroid Radar is a public project that can be downloaded and modified under the terms and conditions of the [MIT License](LICENSE).
