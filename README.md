@@ -10,7 +10,7 @@ ShoeStore is the second project of the Android Kotlin Developer nanodegree provi
 
 The project consists of just two screens, the first one representing a list of asteroids whose path is close to the Earth planet, and the second one provides details of an asteroid selected from the list.
 
-Visit the [Wiki]() to see the application screens.
+Visit the [Wiki](https://github.com/PaoloCaldera/asteroidRadar/wiki) to see the application screens.
 
 
 ## Getting Started
