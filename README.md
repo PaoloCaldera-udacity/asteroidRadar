@@ -15,8 +15,10 @@ Visit the [Wiki](https://github.com/PaoloCaldera/asteroidRadar/wiki) to see the 
 
 ## Getting Started
 To clone the repository, use the command
+```
 $ git clone https://github.com/PaoloCaldera/asteroidRadar.git
-or the Get from VCS option inside Android Studio by copying the link above.
+```
+or the `Get from VCS` option inside Android Studio by copying the link above.
 
 Then, run the application on an Android device or emulator. The application is compiled with API 33, thus use a device or emulator supporting such API version.
 For complete usage of the application, be sure that the device or emulator is connected to a Wi-Fi network.
